@@ -12,39 +12,82 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
+  Image,
 } from 'react-native';
 
-import TabNavigator from 'react-native-tab-navigator';
-import Tabbar from './js/tabbar/Tabbar'
+
+// import TabNavigator from 'react-native-tab-navigator';
+// import Tabbar from './js/tabbar/Tabbar'
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import TodayScreen from './js/today/TodayScreen'
+import GamesScreen from './js/games/GamesScreen'
+import UpdatesScreen from './js/updates/UpdatesScreen'
+import SearchScreen from './js/search/SearchScreen'
+
+const Tab = createBottomTabNavigator();
 
 const App: () => Node = () => {
+
+  const today = 'Today'
+  const games = 'Games'
+  const updates = 'Updates'
+  const search = 'Search'
+
   return (
     <>
-      <SafeAreaView style={styles.topArea}>
-        {/* 可添加naivigation */}
-      </SafeAreaView>
-      {/* 可添加navigation */}
-      <View style={styles.container}>        
-        <Tabbar />
-      </View>
-      <SafeAreaView style={styles.bottomArea}>
-      </SafeAreaView>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let asource
+              switch (route.name) {
+                case today: {
+                  asource = require('./image/today.png')
+                  break
+                }
+                case games: {
+                  asource = require('./image/games.png')
+                  break
+                }
+                case updates: {
+                  asource = require('./image/updates.png')
+                  break
+                }
+                case search: {
+                  asource = require('./image/search.png')
+                  break
+                }
+              }
+              if (focused) {
+                return <Image source={asource} style={styles.tabbarIconFocused} />;
+              } else {
+                return <Image source={asource} style={styles.tabbarIcon} />;
+              }              
+            },
+            
+          })}
+        >
+          <Tab.Screen name={today} component={TodayScreen} tabb />
+          <Tab.Screen name={games} component={GamesScreen} />
+          <Tab.Screen name={updates} component={UpdatesScreen} />
+          <Tab.Screen name={search} component={SearchScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  topArea: {
-    flex: 0,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-  },
-   bottomArea: {
-    flex: 0,
-    backgroundColor: '#f8f8f8',
-  },
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  tabbarIcon: {
+    tintColor: 'gray'
+  },
+  tabbarIconFocused: {
+    tintColor: blueTextColor
   },
 });
 

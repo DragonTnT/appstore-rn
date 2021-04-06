@@ -4,9 +4,30 @@ import {
     FlatList,
     StyleSheet,
     Text,
-    Image
+    Image,
+    SafeAreaView
 } from 'react-native'
 import UserIcon from '../common/UserIcon'
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
+
+const TodayScreen = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name=' '
+                component={Today}
+                options={{
+                    headerShown: false,
+                    headerStyle: {
+                        shadowColor: 'transparent'
+                    },
+                }}
+            />                
+        </Stack.Navigator>        
+    )
+}
 
 const Today = () => {
 
@@ -18,20 +39,22 @@ const Today = () => {
     }
 
     return (
-        <FlatList
-            style={styles.flatList}
-            ListHeaderComponent={header}
-            data={imageArr}
-            renderItem={(item) =>
-                <View style={{ height: 440 }}>
-                    <View style={styles.cellBackground}>
-                        <Image source={imageArr[item.index]} style={styles.cell} />
+        <SafeAreaView>
+            <FlatList
+                style={styles.flatList}
+                ListHeaderComponent={header}
+                data={imageArr}
+                renderItem={(item) =>
+                    <View style={{ height: 440 }}>
+                        <View style={styles.cellBackground}>
+                            <Image source={imageArr[item.index]} style={styles.cell} />
+                        </View>
                     </View>
-                </View>
-            }
-            keyExtractor={item => item}
-        />
-    )
+                }
+                keyExtractor={(item, index) => index.toString()}
+            />
+        </SafeAreaView>
+    )    
 }
 
 const Header = () => {
@@ -68,7 +91,6 @@ const styles = StyleSheet.create({
     flatList: {
         paddingLeft: 20, 
         paddingRight: 20, 
-        marginTop: 10,
     },
     cell: {
         height: 410, 
@@ -82,4 +104,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Today
+export default TodayScreen
